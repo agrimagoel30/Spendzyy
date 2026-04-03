@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1012559598044",
+    "project_id": "spendzyy-f9756",
+    "storage_bucket": "spendzyy-f9756.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1012559598044:android:b9ec1441c7773f6afd7f19",
+        "android_client_info": {
+          "package_name": "com.agrima.spendzyy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBzpysogBsSzJhXm2XG-5t-XTEcLQQ4jXw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
