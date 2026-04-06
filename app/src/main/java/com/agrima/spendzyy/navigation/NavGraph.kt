@@ -16,6 +16,7 @@ import com.agrima.spendzyy.viewmodel.ExpenseViewModel
 import com.agrima.spendzyy.viewmodel.NotesViewModel
 import com.agrima.spendzyy.viewmodel.NotesViewModelFactory
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 
 @Composable
@@ -174,12 +175,36 @@ fun NavGraph(
         composable("signup") {
             SignupScreen(
                 navController = navController,
-                onSignupClick = { email, password ->
+                onSignupClick = { email, password, username->
                     // Firebase signup yahan handle hoga
                     val auth = FirebaseAuth.getInstance()
+                    val db = FirebaseFirestore.getInstance()
 
+//                    auth.createUserWithEmailAndPassword(email, password)
+//                        .addOnSuccessListener {
+//                            navController.navigate("home") {
+//                                popUpTo("signup") { inclusive = true }
+//                            }
+//                        }
+//                        .addOnFailureListener {
+//                            Log.e("AUTH", "Signup failed", it)
+//                        }
                     auth.createUserWithEmailAndPassword(email, password)
-                        .addOnSuccessListener {
+                        .addOnSuccessListener { result ->
+
+                            val userId = result.user?.uid
+
+                            val userMap = hashMapOf(
+                                "username" to username,
+                                "email" to email
+                            )
+
+                            if (userId != null) {
+                                db.collection("users")
+                                    .document(userId)
+                                    .set(userMap)
+                            }
+
                             navController.navigate("home") {
                                 popUpTo("signup") { inclusive = true }
                             }
