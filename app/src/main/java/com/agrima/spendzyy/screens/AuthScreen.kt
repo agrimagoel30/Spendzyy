@@ -21,13 +21,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.navigation.NavHostController
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AuthScreen(
-    onLoginClick: (String, String) -> Unit,
-    onSignupClick: (String, String) -> Unit
-) {
+    navController: NavHostController,
+    onLoginClick: (String, String) -> Unit) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
@@ -74,7 +74,7 @@ fun AuthScreen(
         Spacer(modifier = Modifier.height(10.dp))
 
         TextButton(
-            onClick = { onSignupClick(email, password) },
+            onClick = { navController.navigate("signup") },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Create Account")

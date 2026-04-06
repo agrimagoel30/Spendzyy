@@ -142,6 +142,7 @@ fun NavGraph(
         composable("auth") {
             val auth = FirebaseAuth.getInstance()
             AuthScreen(
+                navController=navController,
                 onLoginClick = { email, password ->
                     auth.signInWithEmailAndPassword(email, password)
                         .addOnSuccessListener {
@@ -153,15 +154,34 @@ fun NavGraph(
                             Log.e("AUTH", "Login failed", it)
                         }
                 },
+//                onSignupClick = { email, password ->
+//                    if(email.isBlank() || password.isBlank()){
+//                        Log.e("AUTH","Email or Password empty")
+//                        return@AuthScreen
+//                    }
+//                    auth.createUserWithEmailAndPassword(email, password)
+//                        .addOnSuccessListener {
+//                            navController.navigate("home") {
+//                                popUpTo("auth") { inclusive = true }
+//                            }
+//                        }
+//                        .addOnFailureListener {
+//                            Log.e("AUTH", "Signup failed", it)
+//                        }
+//                }
+            )
+        }
+        composable("signup") {
+            SignupScreen(
+                navController = navController,
                 onSignupClick = { email, password ->
-                    if(email.isBlank() || password.isBlank()){
-                        Log.e("AUTH","Email or Password empty")
-                        return@AuthScreen
-                    }
+                    // Firebase signup yahan handle hoga
+                    val auth = FirebaseAuth.getInstance()
+
                     auth.createUserWithEmailAndPassword(email, password)
                         .addOnSuccessListener {
                             navController.navigate("home") {
-                                popUpTo("auth") { inclusive = true }
+                                popUpTo("signup") { inclusive = true }
                             }
                         }
                         .addOnFailureListener {
