@@ -20,6 +20,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -38,6 +39,7 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun SignupScreen(
     navController: NavHostController,
+    errorMessage:String,
     onSignupClick: (String, String, String) -> Unit
 ) {
     var email by remember { mutableStateOf("") }
@@ -46,6 +48,7 @@ fun SignupScreen(
     var passwordVisible by remember { mutableStateOf(false) }
     var confirmPasswordVisible by remember { mutableStateOf(false) }
     var username by remember {mutableStateOf("")}
+//    var errorMessage by remember {mutableStateOf("")}
 
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -151,9 +154,19 @@ fun SignupScreen(
                 fontSize = 14.sp
             )
         }
+        // 🔴 Firebase error (IMPORTANT FIX)
+        if (errorMessage.isNotEmpty()) {
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = errorMessage,
+                color = Color.Red,
+                fontSize = 14.sp
+            )
+        }
         Spacer(modifier = Modifier.height(20.dp))
 
-        Button(onClick = {
+        Button(
+            onClick = {
             if (password == confirmPassword) {
                 onSignupClick(email, password,username )
             }
@@ -165,6 +178,13 @@ fun SignupScreen(
             shape = RoundedCornerShape(16.dp)
         ) {
             Text("Sign Up")
+        }
+        TextButton(
+            onClick = {
+                navController.navigate("auth")
+            }
+        ) {
+            Text("Already have an account? Login")
         }
     }
 }
