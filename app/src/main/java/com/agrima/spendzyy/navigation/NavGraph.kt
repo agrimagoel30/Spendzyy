@@ -1,6 +1,8 @@
 package com.agrima.spendzyy.navigation
 
 import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -19,11 +21,15 @@ import com.agrima.spendzyy.screens.*
 import com.agrima.spendzyy.viewmodel.ExpenseViewModel
 import com.agrima.spendzyy.viewmodel.NotesViewModel
 import com.agrima.spendzyy.viewmodel.NotesViewModelFactory
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
 import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 
 
@@ -151,6 +157,37 @@ fun NavGraph(
         composable("auth") {
             val auth = FirebaseAuth.getInstance()
             var errorMessage by remember { mutableStateOf("") }
+            val context=LocalContext.current
+            val googleSignInClient = GoogleSignIn.getClient(
+                context,
+                GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestIdToken("1012559598044-nqr4sf1ruqc4jh0tptjj0on0p6tatcq8.apps.googleusercontent.com")
+                    .requestEmail()
+                    .build()
+            )
+            val launcher = rememberLauncherForActivityResult(
+                contract = ActivityResultContracts.StartActivityForResult()
+            ) { result ->
+
+                val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+
+                try {
+                    val account = task.getResult(ApiException::class.java)
+                    val credential = GoogleAuthProvider.getCredential(account.idToken, null)
+
+                    FirebaseAuth.getInstance()
+                        .signInWithCredential(credential)
+                        .addOnSuccessListener {
+                            navController.navigate("home")
+                        }
+                        .addOnFailureListener {
+                            errorMessage = "Google Sign-In failed"
+                        }
+
+                } catch (e: Exception) {
+                    errorMessage = "Google Sign-In error"
+                }
+            }
             AuthScreen(
                 navController=navController,
                 onLoginClick = { email, password ->
@@ -197,6 +234,10 @@ fun NavGraph(
                     } else {
                         errorMessage = "Enter email first"
                     }
+                },
+                onGoogleSignInClick = {
+                    val signInIntent = googleSignInClient.signInIntent
+                    launcher.launch(signInIntent)
                 }
             )
         }

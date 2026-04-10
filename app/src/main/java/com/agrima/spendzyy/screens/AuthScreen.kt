@@ -40,7 +40,8 @@ fun AuthScreen(
     navController: NavHostController,
     onLoginClick: (String, String) -> Unit,
     errorMessage:String,
-    onForgotPasswordClick: (String) -> Unit) {
+    onForgotPasswordClick: (String) -> Unit,
+    onGoogleSignInClick:()->Unit) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
@@ -122,6 +123,13 @@ fun AuthScreen(
             Text("Login")
         }
 
+        Spacer(modifier = Modifier.height(10.dp))
+        Button(
+            onClick = { onGoogleSignInClick() },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Sign in with Google")
+        }
         Spacer(modifier = Modifier.height(10.dp))
         Row(
             horizontalArrangement = Arrangement.Center,

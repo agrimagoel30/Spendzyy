@@ -12,7 +12,20 @@
           "package_name": "com.agrima.spendzyy"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1012559598044-jkn2mm794ud727v9jba2hf60k58dm9sj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.agrima.spendzyy",
+            "certificate_hash": "3cff22da6e4e91825c9cd3eb105d82d5e4364601"
+          }
+        },
+        {
+          "client_id": "1012559598044-nqr4sf1ruqc4jh0tptjj0on0p6tatcq8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBzpysogBsSzJhXm2XG-5t-XTEcLQQ4jXw"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1012559598044-nqr4sf1ruqc4jh0tptjj0on0p6tatcq8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
