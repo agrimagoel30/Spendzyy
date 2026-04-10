@@ -69,6 +69,7 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     implementation(libs.generativeai)
     implementation(libs.androidx.compose.runtime)
+    implementation(libs.androidx.compose.foundation)
 
     debugImplementation(libs.androidx.compose.ui.tooling)
         debugImplementation(libs.androidx.compose.ui.test.manifest)
