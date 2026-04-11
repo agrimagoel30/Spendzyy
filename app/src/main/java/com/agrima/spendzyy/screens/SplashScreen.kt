@@ -32,22 +32,11 @@ val splashGradient = Brush.verticalGradient(
 
 @Composable
 fun SplashScreen(navController: NavController) {
-
-    /* ---------------- FONT ---------------- */
-
     val calligraphyFont = FontFamily(
         Font(R.font.pacifico_regular, FontWeight.Normal)
     )
-
-    /* ---------------- ANIMATION STATE ---------------- */
-
     val scale = remember { Animatable(0.8f) }
-
-    /* ---------------- ANIMATION FLOW ---------------- */
-
     LaunchedEffect(Unit) {
-
-        // 🔹 Zoom IN (0s → 2s)
         scale.animateTo(
             targetValue = 1.2f,
             animationSpec = tween(
@@ -55,8 +44,6 @@ fun SplashScreen(navController: NavController) {
                 easing = FastOutSlowInEasing
             )
         )
-
-        // 🔹 Zoom OUT (2s → 4s)
         scale.animateTo(
             targetValue = 1f,
             animationSpec = tween(
@@ -64,29 +51,22 @@ fun SplashScreen(navController: NavController) {
                 easing = FastOutSlowInEasing
             )
         )
-
-        // 🔹 Hold for 1s (4s → 5s)
         delay(1000)
-
-        // 🔹 Navigate to Home
-//        navController.navigate("home") {
-//            popUpTo("splash") { inclusive = true }
-//        }
         val user = FirebaseAuth.getInstance().currentUser
 
-        if (user != null) {
-            navController.navigate("home") {
-                popUpTo("splash") { inclusive = true }
-            }
-        } else {
-            navController.navigate("auth") {
-                popUpTo("splash") { inclusive = true }
-            }
+//        if (user != null) {
+//            navController.navigate("home") {
+//                popUpTo("splash") { inclusive = true }
+//            }
+//        } else {
+//            navController.navigate("auth") {
+//                popUpTo("splash") { inclusive = true }
+//            }
+//        }
+        navController.navigate("auth") {
+            popUpTo("splash") { inclusive = true }
         }
     }
-
-    /* ---------------- UI ---------------- */
-
     Box(
         modifier = Modifier
             .fillMaxSize()

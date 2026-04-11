@@ -172,6 +172,16 @@ fun AuthScreen(
             }
         }
         Spacer(modifier = Modifier.height(10.dp))
+        OutlinedButton(
+            onClick = {
+                navController.navigate("home") {
+                    popUpTo("auth") { inclusive = true }
+                }
+            },
+            modifier=Modifier.fillMaxWidth()
+        ) {
+            Text("Continue as Guest")
+        }
         Row(
             horizontalArrangement = Arrangement.Center,
             modifier = Modifier.fillMaxWidth()

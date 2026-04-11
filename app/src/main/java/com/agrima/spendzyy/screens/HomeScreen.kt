@@ -3,6 +3,7 @@ package com.agrima.spendzyy.screens
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
@@ -25,6 +26,7 @@ import com.agrima.spendzyy.ui.theme.SubTextColor
 import com.agrima.spendzyy.utils.getFriendlyDate
 import com.agrima.spendzyy.utils.getMonthYear
 import com.agrima.spendzyy.viewmodel.ExpenseViewModel
+import com.google.firebase.auth.FirebaseAuth
 import java.util.Calendar
 
 
@@ -33,23 +35,10 @@ fun HomeScreen(
     navController: NavController,
     expenseViewModel: ExpenseViewModel
 ) {
-
-    // 🔥 REAL DATA FROM VIEWMODEL
-//    val expenses = expenseViewModel.expenseList
-//    val monthlyBudget = expenseViewModel.monthlyBudget
-//    val totalSpent = expenseViewModel.totalSpent
-//    val remainingBalance = expenseViewModel.remainingBalance
-//
-//    val recentExpenses = expenses.takeLast(3).reversed()
-//    val expenses = expenseViewModel.getCurrentMonthExpenses()
     val allExpenses by expenseViewModel.allExpenses.collectAsState(emptyList())
-
-//    val expenses = expenseViewModel.getCurrentMonthExpenses(allExpenses)
     val calendar = Calendar.getInstance()
     val currentMonth = calendar.get(Calendar.MONTH)
     val currentYear = calendar.get(Calendar.YEAR)
-
-// filter current month expenses
     val expenses = allExpenses.filter { expense ->
         val cal = Calendar.getInstance()
         cal.timeInMillis = expense.timestamp
@@ -69,7 +58,6 @@ fun HomeScreen(
         .sortedByDescending { it.timestamp }
         .take(5)
     val categoryPercentages = expenseViewModel.getCategoryPercentages(expenses)
-
 
 
     Column(
@@ -109,6 +97,9 @@ fun HomeScreen(
 
 @Composable
 fun TopHeader(navController: NavController) {
+    val user = FirebaseAuth.getInstance().currentUser
+    val name = user?.displayName ?: "Guest User"
+    val firstLetter = name.first().uppercase()
 
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -129,16 +120,29 @@ fun TopHeader(navController: NavController) {
             )
         }
 
-        Icon(
-            imageVector = Icons.Default.AccountCircle,
-            contentDescription = "Profile",
+//        Icon(
+//            imageVector = Icons.Default.AccountCircle,
+//            contentDescription = "Profile",
+//            modifier = Modifier
+//                .size(36.dp)
+//                .clickable {
+//                    navController.navigate("profile")
+//                },
+//            tint = Color.DarkGray
+//        )
+        Box(
             modifier = Modifier
-                .size(36.dp)
-                .clickable {
-                    navController.navigate("profile")
-                },
-            tint = Color.DarkGray
-        )
+                .size(40.dp)
+                .background(Color(0xFF4CAF50), shape = CircleShape)
+                .clickable{navController.navigate("profile")},
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = firstLetter,
+                color = Color.White,
+                fontWeight = FontWeight.Bold
+            )
+        }
     }
 }
 
