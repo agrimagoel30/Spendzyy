@@ -1,5 +1,6 @@
 package com.agrima.spendzyy.viewmodel
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -122,7 +123,8 @@ class ExpenseViewModel(
     }
 
         fun saveExpenseToFirestore(expense: ExpenseFirestoreModel) {
-
+            val user = FirebaseAuth.getInstance().currentUser
+            Log.d("FIRESTORE_DEBUG", "User: ${user?.uid}")
             val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
 
             val db = FirebaseFirestore.getInstance()
@@ -132,6 +134,12 @@ class ExpenseViewModel(
                 .collection("expenses")
                 .document(expense.id)
                 .set(expense)
+                .addOnSuccessListener {
+                    Log.d("FIRESTORE_DEBUG","Expense saved successfully")
+                }
+                .addOnFailureListener { e->
+                    Log.e("FIRESTORE_DEBUG","Failed: ${e.message}")
+                }
         }
 
         fun saveNoteToFirestore(note: NoteFirestoreModel) {
@@ -146,5 +154,26 @@ class ExpenseViewModel(
                 .document(note.id)
                 .set(note)
         }
+    fun fetchExpensesFromFirestore() {
+
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+        val db = FirebaseFirestore.getInstance()
+
+        db.collection("users")
+            .document(userId)
+            .collection("expenses")
+            .get()
+            .addOnSuccessListener { result ->
+
+                val expensesList = result.documents.mapNotNull {
+                    it.toObject(ExpenseFirestoreModel::class.java)
+                }
+
+                Log.d("FIRESTORE_FETCH", "Fetched: ${expensesList.size}")
+            }
+            .addOnFailureListener { e ->
+                Log.e("FIRESTORE_FETCH", "Error: ${e.message}")
+            }
+    }
 
 }

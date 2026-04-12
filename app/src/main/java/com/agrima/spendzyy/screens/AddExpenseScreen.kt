@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.agrima.spendzyy.data.local.entity.ExpenseEntity
 import com.agrima.spendzyy.model.Expense
+import com.agrima.spendzyy.model.ExpenseFirestoreModel
 import com.agrima.spendzyy.ui.theme.AccentBlue
 import com.agrima.spendzyy.ui.theme.SubTextColor
 import com.agrima.spendzyy.utils.getFormattedDate
@@ -204,7 +205,15 @@ fun AddExpenseScreen(viewModel: ExpenseViewModel,
                                     month = month
                                 )
                             )
+                            val firestoreExpense = ExpenseFirestoreModel(
+                                id = System.currentTimeMillis().toString(),
+                                note = title.trim(),
+                                amount = amountInt,
+                                category = selectedCategory,
+                                timestamp = System.currentTimeMillis()
+                            )
 
+                            viewModel.saveExpenseToFirestore(firestoreExpense)
                         } else {
 
 

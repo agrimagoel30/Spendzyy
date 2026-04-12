@@ -38,6 +38,9 @@ fun HomeScreen(
     navController: NavController,
     expenseViewModel: ExpenseViewModel
 ) {
+    LaunchedEffect(Unit) {
+        expenseViewModel.fetchExpensesFromFirestore()
+    }
     val allExpenses by expenseViewModel.allExpenses.collectAsState(emptyList())
     val calendar = Calendar.getInstance()
     val currentMonth = calendar.get(Calendar.MONTH)
