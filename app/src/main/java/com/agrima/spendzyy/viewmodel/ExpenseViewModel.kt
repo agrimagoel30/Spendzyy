@@ -7,6 +7,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.agrima.spendzyy.data.local.entity.ExpenseEntity
 import com.agrima.spendzyy.data.repository.ExpenseRepository
+import com.agrima.spendzyy.model.ExpenseFirestoreModel
+import com.agrima.spendzyy.model.NoteFirestoreModel
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -75,15 +79,6 @@ class ExpenseViewModel(
             .mapValues { it.value.sumOf { e -> e.amount } }
     }
 
-//    fun getCategoryPercentages(expenses: List<ExpenseEntity>): Map<String, Float> {
-//        val total = expenses.sumOf { it.amount }.toFloat()
-//        if (total == 0f) return emptyMap()
-//
-//        return getCategoryTotals(expenses).mapValues { (, amount) ->
-//            (amount / total) * 100f
-//        }
-//    }
-
     fun getCategoryPercentages(
         expenses: List<ExpenseEntity>
     ): Map<String, Float> {
@@ -125,4 +120,31 @@ class ExpenseViewModel(
             .distinct()
             .sorted()
     }
+
+        fun saveExpenseToFirestore(expense: ExpenseFirestoreModel) {
+
+            val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+
+            val db = FirebaseFirestore.getInstance()
+
+            db.collection("users")
+                .document(userId)
+                .collection("expenses")
+                .document(expense.id)
+                .set(expense)
+        }
+
+        fun saveNoteToFirestore(note: NoteFirestoreModel) {
+
+            val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+
+            val db = FirebaseFirestore.getInstance()
+
+            db.collection("users")
+                .document(userId)
+                .collection("notes")
+                .document(note.id)
+                .set(note)
+        }
+
 }

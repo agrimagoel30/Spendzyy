@@ -36,11 +36,7 @@ fun AddExpenseScreen(viewModel: ExpenseViewModel,
     var expanded by remember { mutableStateOf(false) }
 
     val categories = listOf("Food", "Travel", "Shopping", "Bills", "Other")
-//    val existingExpense = remember(expenseId) {
-//        if (expenseId != -1L)
-//            viewModel.getExpenseById(expenseId)
-//        else null
-//    }
+
 
     var existingExpense by remember { mutableStateOf<ExpenseEntity?>(null) }
 
@@ -178,59 +174,6 @@ fun AddExpenseScreen(viewModel: ExpenseViewModel,
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // ---------- SAVE BUTTON ----------
-//        Button(
-//            onClick = {
-//                val amountInt = amount.toIntOrNull()
-//
-//                when {
-//                    title.isBlank() -> {
-//                        // optional: snackbar later
-//                        return@Button
-//                    }
-//
-//                    amountInt == null -> {
-//                        // not a number → reject
-//                        return@Button
-//                    }
-//
-//                    amountInt <= 0 -> {
-//                        // zero / negative → reject
-//                        return@Button
-//                    }
-//
-//                    else -> {
-//                        viewModel.addExpense(
-//                            Expense(
-//                                title = title.trim(),
-//                                amount = amountInt, // 👈 clean number
-//                               category = selectedCategory,
-////                                date = "Today",
-//                                date = getFormattedDate(System.currentTimeMillis()),
-//                                description = description.trim(),
-//                                timestamp = System.currentTimeMillis()   // 🔥 MOST IMPORTANT
-//                            )
-//                        )
-//
-//                        navController.navigate("expenses") {
-//                            popUpTo("add") { inclusive = true }
-//                        }
-//                    }
-//                }
-//            },
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .height(52.dp),
-//            shape = RoundedCornerShape(16.dp),
-//            colors = ButtonDefaults.buttonColors(
-//                containerColor = AccentBlue
-//            )
-//            ) {
-//            Icon(Icons.Default.Check, contentDescription = null)
-//            Spacer(modifier = Modifier.width(8.dp))
-//            Text(text = "Save Expense")
-//        }
-
         Button(
             onClick = {
                 val amountInt = amount.toIntOrNull()
@@ -248,17 +191,7 @@ fun AddExpenseScreen(viewModel: ExpenseViewModel,
 
                     else -> {
                         if (existingExpense == null) {
-                            // 🔵 ADD MODE
-//                            viewModel.addExpense(
-//                                Expense(
-//                                    title = title.trim(),
-//                                    amount = amountInt,
-//                                    category = selectedCategory,
-//                                    date = getFormattedDate(System.currentTimeMillis()),
-//                                    description = description.trim(),
-//                                    timestamp = System.currentTimeMillis()
-//                                )
-//                            )
+
                             viewModel.addExpense(
                                 ExpenseEntity(
                                     id = 0, // Room auto-generate karega
@@ -273,16 +206,7 @@ fun AddExpenseScreen(viewModel: ExpenseViewModel,
                             )
 
                         } else {
-                            // 🟢 EDIT MODE
-//                            viewModel.updateExpense(
-//                                existingExpense.copy(
-//                                    title = title.trim(),
-//                                    amount = amountInt,
-//                                    category = selectedCategory,
-//                                    description = description.trim()
-//                                    // timestamp SAME rahega
-//                                )
-//                            )
+
 
                             existingExpense?.let { expense ->
                                 viewModel.updateExpense(

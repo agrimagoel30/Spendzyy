@@ -9,6 +9,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -17,18 +18,20 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.agrima.spendzyy.components.PieChartLegend
 import com.agrima.spendzyy.components.RealPieChart
 import com.agrima.spendzyy.data.local.entity.ExpenseEntity
 import com.agrima.spendzyy.model.Expense
+import com.agrima.spendzyy.model.ExpenseFirestoreModel
 import com.agrima.spendzyy.ui.theme.SubTextColor
 import com.agrima.spendzyy.utils.getFriendlyDate
 import com.agrima.spendzyy.utils.getMonthYear
 import com.agrima.spendzyy.viewmodel.ExpenseViewModel
 import com.google.firebase.auth.FirebaseAuth
 import java.util.Calendar
-
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun HomeScreen(
@@ -60,6 +63,7 @@ fun HomeScreen(
     val categoryPercentages = expenseViewModel.getCategoryPercentages(expenses)
 
 
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -88,6 +92,7 @@ fun HomeScreen(
 
         RecentExpensesSection(recentExpenses)
     }
+
 }
 
 
